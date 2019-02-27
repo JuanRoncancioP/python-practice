@@ -9,12 +9,12 @@ class Contactos:
         self.util = Utilidades()
 
     def leerDir(self):
-        statinfo = os.stat("directorio\directorio.txt")
+        statinfo = os.stat("directorio\\directorio.txt")
         if not statinfo:
             self.datos = {}
             self.llave = '1'
         else:
-            with open("directorio\directorio.txt", "r") as File:
+            with open("directorio\\directorio.txt", "r") as File:
                 if bool(File):
                     self.datos = json.loads(File.read())
                     self.llave = str(int(max(self.datos)) + 1)
@@ -31,7 +31,7 @@ class Contactos:
         self.llave = str(int(self.llave) + 1)
 
     def guardaDir(self):
-        with open("directorio\directorio.txt", "w") as File:
+        with open("directorio\\directorio.txt", "w") as File:
             if bool(File):
                 File.write(json.dumps(self.datos))
             else:
@@ -77,9 +77,6 @@ class Contactos:
             print('\t\t-Correos')
             for x in self.datos[op][2]:
                 print('\t\t\t', x)
-
-
-
 
 
 def main():
