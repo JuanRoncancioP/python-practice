@@ -4,55 +4,77 @@ import json
 
 class Menu:
     """
-    @Methods: show_menu, get_option
-    @Attributes: optionList dict, tittle str
+    Attributes: 
+        option_list dict: contains the menu's options {str(int): str_option} 
+        tittle str: contains the menu's tittle
+
+    Methods: 
+        show_menu: prints a menu in text mode 
+        get_option: read a keyboard input forced into the option´s list
+        tab_level: factor of \\t used for print the menu
     """
 
-    def __init__ (self, optionList, tittle = '--MENU--', tabLevel = 0):
+    def __init__ (self, option_list, tittle = '--MENU--', tab_level = 0):
         """"
-        @Arguments: optionList dict, tittle str
-        @Returns: True if the arguments have the rigth type
+        Description:
+            Object´s inicialization
+        Arguments:
+            option_list: dict with menu's options
+            tittle:  str with menu's tittle
+            tab_level: int with the factor of tabs used for print the menu
+
+        Returns: None
         """
-        self.optionList = {'1': '1. Salir'}
+        self.option_list = {'1': '1. Salir'}
         self.opmin = '0'
         self.tittle = '--MENU--'
-        self.tabLevel = tabLevel
-        if type(optionList) == dict:
-            self.optionList = optionList
-            self.opmin = str(int(min(self.optionList)) - 1)
-        self.salir = str(len(self.optionList))
+        self.tab_level = tab_level
+        if type(option_list) == dict:
+            self.option_list = option_list
+            self.opmin = str(int(min(self.option_list)) - 1)
+        self.salir = str(len(self.option_list))
         if type(tittle) == str:    
             self.tittle = tittle
         
-        if type(tabLevel) == int:
-            self.tabLevel = tabLevel
+        if type(tab_level) == int:
+            self.tab_level = tab_level
     
     def set_tittle(self, tittle):
         """
-        Args:
+        Description:
+            Sets the tittle attribute
+        Arguments:
             tittle: type str. Value od the new tittle of the menu 
-        
+        Returns: 
+            None    
         """
         self.tittle = tittle
     
     def show_menu (self):
         """
-        @Method
-        show_menu: print the options provided at __init__ method argument  
+        Description:
+            show_menu: shows a text mode menu          
+        Returns: 
+            None    
         """
-        print("\t"*self.tabLevel, self.tittle)
-        print('\n'.join(["\t" * self.tabLevel + self.optionList[x] for x in sorted(self.optionList)]))
+
+        print("\t"*self.tab_level, self.tittle)
+        print('\n'.join(["\t" * self.tab_level + self.option_list[x] for x in sorted(self.option_list)]))
     
     def get_option(self):
         """
-        @Method
-        show_menu: print the options provided at __init__ method argument  
+        Arguments:
+            None
+        Description:
+            Trolls the user until he or she type a option in the menu
+        Returns:
+            returns de user´s choose 
         """
         op = self.opmin
-        while op not in self.optionList:
-            op = input("\t"*self.tabLevel + "*Digite su opcion: ")
-            if(op not in (self.optionList)):
-                print("\t"*self.tabLevel + "Los números del menú... Hijo!!!")
+        while op not in self.option_list:
+            op = input("\t"*self.tab_level + "*Digite su opcion: ")
+            if(op not in (self.option_list)):
+                print("\t"*self.tab_level + "Los números del menú... Hijo!!!")
         return(op)
 
     def getSalir(self):
