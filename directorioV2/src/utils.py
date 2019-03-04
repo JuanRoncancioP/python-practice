@@ -5,7 +5,8 @@ import json
 class Menu:
     """
     Attributes: 
-        option_list dict: contains the menu's options {str(int): str_option} 
+        option_list dict: contains the menu's options {str(int): str_option}.
+            the last elemente may be the 'exit' option.
         tittle str: contains the menu's tittle
 
     Methods: 
@@ -22,7 +23,6 @@ class Menu:
             option_list: dict with menu's options
             tittle:  str with menu's tittle
             tab_level: int with the factor of tabs used for print the menu
-
         Returns: None
         """
         self.option_list = {'1': '1. Salir'}
@@ -68,7 +68,7 @@ class Menu:
         Description:
             Trolls the user until he or she type a option in the menu
         Returns:
-            returns de user´s choose 
+            returns the user´s choose  option
         """
         op = self.opmin
         while op not in self.option_list:
@@ -79,53 +79,75 @@ class Menu:
 
     def getSalir(self):
         """
-        @Method
-        show_menu: returns the number of elements of the elements´s dict. 
-        Means exit option
+        Arguments:
+            None
+        Returns:
+            returns the exit option
         """
         return(self.salir)
 
 class utils:
     """
-    @Methods: validate_phone, validate_email, readData,  
-    @Atributtes:  
+    Description:
+        class with methods to make nice things like validate input strings  
+    Atributtes:  
+        None
     """
     
     def __init__ (self):
         """ @__init__ function"""
         pass
 
-    def find_file(self, namefile, path):
-        """ @__init__ function"""
-        #root, dirs, files
+    def find_file(self, file_name, path):
+        """ 
+        Arguments:
+            file_name: 
+                name.ext of file
+            path:
+                path of the file that will be found
+        Return:
+            Returns True if the file was found at the path
+        """
         for info in os.walk(path):
-            if namefile in info[2]:
+            if file_name in info[2]:
                 return True
         return False            
 
     def validate_phone(self, phone):
         """
-        @Arguments: 
-        @Description: Validates a telephon number string
+        Arguments: 
+            phone: string with phone typed by the user        
+        Returns: 
+            returns True if the phone match with the regex
         """
         patron = r"[^0-9] -"
         return(not re.search(patron, phone))
 
     def validate_email(self, email):
-        #Validates a mail string
+        """
+        Arguments: 
+            phone: string with email typed by the user        
+        Returns: 
+            returns True if the email match with the regex
+        """
         patron = r"([\w\.\-]+)@([\w\.-]+)\.([\w\.-]+)"
         return(re.search(patron, email))
 
-    def agreed(self, label, opcions):
+    def agreed(self, label, options):
         """
-        @Arguments: 
-        @Description: Shows a "Label to" the user and reads an input comparing it
-        to the "options". 
+        Description:
+            Shows a "Label to" the user and reads an input comparing it
+            to the "options".  
+        Arguments:
+            label: Text to be printed
+            option: list woth the options to be validated
+        Return: 
+            Returns the option choose for the user   
         """
-        op = opcions[0].lower()
-        opcions = [x[0].upper() for x in opcions]
-        while op[0] not in opcions:
-            op = input(label + ' (' + '/'.join(opcions) + '): ')
+        op = options[0].lower()
+        options = [x[0].upper() for x in options]
+        while op[0] not in options:
+            op = input(label + ' (' + '/'.join(options) + '): ')
             op = [x[0].upper() for x in op]
         return(op)
 
@@ -158,13 +180,19 @@ class utils:
     
 class contact:
     """
-    @Methods:  set_name, get_name, setPhone, getPhone, setMails, getMails,
-    getMailsMenu, get_phonesMenu
-    @Atributtes: name str, phones dict, emails dict 
+        Description:
+            Class to manage the contact data
     """
 
     def __init__ (self, datos = {"name": "", "phones": dict(), "emails": dict()}, tab = 3):
-        """ @__init__ function"""
+        """
+        Argments: 
+            datos:
+                Dictionary with the Data of the contact like this
+                {"name": "", "phones": {keystr: str}}, "emails": {keystr:str}}}
+            tab:
+                number of "\t" used to print the menu
+        """
         self.datos = datos
         self.__phonesKey = "1"
         self.__emailsKey = "1"
@@ -173,8 +201,12 @@ class contact:
         
     def set_name (self, name):
         """
-        @Arguments: name(str)
-        @Description: set the value of the attribute name
+        Arguments: 
+            name (str): name of the contac
+        Description: 
+            set the value of the attribute name
+        returns: 
+            True when the name was set     
         """
         if type(name) == str:
             self.datos["name"] = name
@@ -184,8 +216,8 @@ class contact:
     
     def get_name (self):
         """
-        @Arguments: self 
-        @Description: Return the value of the attribute name(str) 
+        Return: 
+            Returns the value of the attibute name.
         """
         return (self.datos["name"])
 
@@ -204,40 +236,43 @@ class contact:
         
     def set_phones (self, phones):
         """
-        @Arguments: key str, phone str
-        @Description: set the value of the phone 
+        Arguments: 
+            phones: dictionary with the phones of the contact
+        Description: 
+            set a dictionarary with the value of the phones of the contact 
         """
         if type(phones) == dict: 
-            #self.datos["phones"][self.__phonesKey] = phone
             self.datos["phones"] = phones
-            #self.__phonesKey = str(int(self.__phonesKey) + 1)
             return(True)
         else:   
             return(False) 
         
     def set_emails (self, emails):
         """
-        @Arguments: str key, str email
-        @Description: set the value of the attribute 
+        Arguments: 
+            emails: dictionary with the emails of the contact
+        Description: 
+            set a dictionarary with the value of the emails of the contact 
         """
         if type(emails) == dict: 
             self.datos["emails"] = emails
-            #self.__emailsKey = str(int(self.__emailsKey) + 1)
             return(True)
         else:   
             return(False) 
         
     def get_emails (self):
         """
-        @Arguments: None
-        @Description: Return a dictionary with the emails 
+        Arguments: None
+        Return: Returns a dictionary with the emails 
         """
         return (self.datos["emails"])
 
     def get_emailsMenu (self):
         """
-        @Arguments: Self
-        @Description: Return a dictionary with the emails 
+        Arguments: Nonne
+        
+        Returns: 
+            Returns a dictionary with the emails 
         """
         emailsMenu = dict(self.datos["emails"])
         emailsMenu[self.__emailsKey] = "Salir"
@@ -245,8 +280,10 @@ class contact:
 
     def get_phonesMenu (self):
         """
-        @Arguments: Self
-        @Description: Return a dictionary with the emails 
+        Arguments: None
+
+        Return: Returns a dictionary with the phones for be used to build a dict
+            with the class Menu
         """
         phonesMenu = dict(self.datos["phones"])
         phonesMenu[self.__phonesKey] = "Salir"
@@ -254,22 +291,27 @@ class contact:
 
     def get_datos(self):
         """
-        @Arguments: Self
-        @Description: Return a dictionary with the emails 
+        Arguments: None
+        Description: Return a dictionary with contact's data 
         """
         return(dict(self.datos))
 
     def set_datos(self, datos):
         """
-        @Arguments: Self
-        @Description: Return a dictionary with the emails 
+        Arguments:
+            datos: dictionary with the contact´s data
+
+        Description: setter of contact´s data
         """
         self.datos = datos    
     
     def run_menu(self):
         """
-        @Arguments: Self
-        @Description: Return a dictionary with the emails 
+        @Arguments: 
+            None
+        @Description: 
+            it´s a menu with the options to manage the contacts and executes the option
+            choosed fo the user
         """
         
         print("\t" * self.tab + "**" + self.datos["name"] + "\n" + "\t" * self.tab + "Telefonos" )
@@ -359,37 +401,33 @@ class contact:
                     print("\n".join("\t"*self.tab + x + '. ' + self.datos["emails"][x] for x in sorted(self.datos["emails"])))
                 """
                 self.aid("emails", False)
-            #imprimir nombre
-            #ller nombre y cambiar
-
-            #Agregar Telefono
-
+            
 
 class dir_contacts:
     """
-    @Methods: loadfile, savefile, dircontacts, addcontact, buildDirectory, buildConMenu 
-    @Atributtes: contacts, pathTxt, contactsKey
+    Description:
+        manage the data of a contact
     """
     
-    def __init__ (self, namefile, path):
+    def __init__ (self, file_name, path):
         """ @__init__ function"""
         self.path = ""
-        self.namefile = ""
+        self.file_name = ""
         self.util = utils()
         self.dircontacts = dict()
         self.contactsKey = '1'
         if type(path) == str: 
             self.path = path
-        if type(namefile) == str:
-            self.namefile = namefile
-        if type(path) == str and type(namefile) == str:
-            if self.util.find_file(self.namefile, self.path):
+        if type(file_name) == str:
+            self.file_name = file_name
+        if type(path) == str and type(file_name) == str:
+            if self.util.find_file(self.file_name, self.path):
                 print("WTF: Found")
-                if not os.stat(path + "\\"+ self.namefile):
+                if not os.stat(path + "\\"+ self.file_name):
                     self.dircontacts = dict()
                     self.contactsKey = '1'
                 else:
-                    with open(self.path + "\\" + self.namefile, "r") as file:
+                    with open(self.path + "\\" + self.file_name, "r") as file:
                         if bool(file):
                             string = file.read()
                             if len(string) > 0:
@@ -400,19 +438,11 @@ class dir_contacts:
             else:
                 print('file not Found')
         
-        
-    
-    def loadDirectory (self):
-        """
-        @Arguments: self 
-        @Description: loads a fiel txt 
-        """
-        pass
     
     def newcontact(self):
         """
-        @Arguments: self 
-        @Description: loads a fiel txt 
+        Description: 
+            Method to create a new contact.
         """
         person = contact()
         person.set_name(input('Nombre del contacto: '))
@@ -428,7 +458,7 @@ class dir_contacts:
 
     def getcont_menu(self):
         """
-        @Arguments: self 
+        Arguments:  None
         @Description: returns a dictionary showing the contacts
         """
         contactsMenu = dict()
@@ -441,15 +471,15 @@ class dir_contacts:
 
     def getcontacts(self):
         """
-        @Arguments: self 
-        @Description: returns a dictionary showing the contacts
+        Arguments: self 
+        Description: returns a dictionary showing the contacts
         """
         return(self.dircontacts)
     
     def listcontacts (self):
         """
-        @Arguments: self 
-        @Description: Shows a list of contacts menu
+        Arguments: self 
+        Description: Shows a list of contacts menu
         """
         contactsMenu = Menu(self.getcont_menu(), 'contactos', 1)
         opc = '0'
@@ -463,10 +493,10 @@ class dir_contacts:
     
     def savecontacts (self):
         """
-        @Arguments: self 
-        @Description: saves the contacts
+        Arguments: self 
+        Description: saves the contacts
         """
-        with open(self.path + "\\" + self.namefile, "w") as file:
+        with open(self.path + "\\" + self.file_name, "w") as file:
             if bool(file):
                 file.write(json.dumps(self.dircontacts))
             else:
@@ -474,15 +504,15 @@ class dir_contacts:
 
     def read_dir(self):
         """
-        @Arguments: self 
-        @Description: load the contacts from text file
+        Arguments: self 
+        Description: load the contacts from text file
         """
         statinfo = os.stat("directorio\\directorio.txt")
         if not statinfo:
             self.datos = {}
             self.llave = '1'
         else:
-            with open(self.path + "\\" + self.namefile, "r") as file:
+            with open(self.path + "\\" + self.file_name, "r") as file:
                 if bool(file):
                     self.datos = json.loads(file.read())
                     self.llave = str(int(max(self.datos)) + 1)
